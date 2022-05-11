@@ -1,13 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './index.css';
-import App from './App';
+import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+import Category from "./components/Category";
+import CatList from "./components/CatList";
+import SignIn from "./components/SignIn";
+import Register from "./components/Register";
+import NewThread from "./components/NewThread";
+import Thread from "./components/Thread";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route path="" element={<CatList />} />
+          <Route path="signin/" element={<SignIn />} />
+          <Route path="register/" element={<Register />} />
+          <Route path="category/:catId" element={<Category />} />
+          <Route path="newthread/:catId" element={<NewThread />} />
+          <Route path="thread/:threadId" element={<Thread />} />
+          {/* <Route path="auth" element={<Auth />} /> */}
+        </Route>
+      </Routes>
+    </Router>
   </React.StrictMode>
 );
 
