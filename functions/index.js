@@ -5,10 +5,16 @@ admin.initializeApp();
 exports.addUserToFirestore = functions.auth.user().onCreate((user) => {
   // when new user created, add user information to firestore
   const usersRef = admin.firestore().collection("users");
+  let dispName;
+  if(user.displayName === null){
+    dispName = user.email;
+  } else {
+    dispName = user.displayName;
+  }
   return usersRef.doc(user.uid).set({
     uid: user.uid,
     email: user.email,
-    displayName: user.displayName,
+    displayName: dispName,
     profileImage: user.photoURL,
   });
 });

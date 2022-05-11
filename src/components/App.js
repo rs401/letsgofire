@@ -9,13 +9,14 @@ import "./App.css";
 import { auth } from "../firebase-config";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
+import { fetchUser } from "../services/auth-svc";
 
 // import { addCat } from "../services/category-svc";
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
-  const [currUser, setCurrUser] = useState(null);
+  const [currUser, setCurrUser] = useState({});
 
   let allTheThings = [
     "Fishing 🎣",
@@ -41,8 +42,12 @@ function App() {
 
   useEffect(() => {
     if (loading) return;
-    // if (!user) return navigate("/");
-    setCurrUser(user);
+    if (user) {
+      // setCurrUser(user);
+      fetchUser(user.uid).then((data) => {
+        setCurrUser(data);
+      });
+    };
   }, [user, loading]);
 
   async function signOut() {
@@ -56,7 +61,6 @@ function App() {
   if (currUser === null) {
     accountNav = <Nav.Link href="/signin">SignIn / SignUp</Nav.Link>;
   } else {
-    // console.log("user: ", user);
     accountNav = (
       <>
         <Nav.Link href="/account">

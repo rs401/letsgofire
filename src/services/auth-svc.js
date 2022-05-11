@@ -1,3 +1,4 @@
+import Alert from "react-bootstrap/Alert";
 import {
   GoogleAuthProvider,
   signInWithPopup,
@@ -7,11 +8,13 @@ import {
   signOut,
 } from "firebase/auth";
 import {
-  query,
-  getDocs,
   collection,
+  query,
   where,
-  addDoc,
+  getDocs,
+  updateDoc,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 
@@ -31,10 +34,11 @@ export const logInWithEmailAndPassword = async (email, password) => {
   } catch (err) {
     console.error(err);
     alert(err.message);
+    // <Alert variant="danger">{err}</Alert>
   }
 };
 
-export const registerWithEmailAndPassword = async (name, email, password) => {
+export const registerWithEmailAndPassword = async (email, password) => {
   try {
     await createUserWithEmailAndPassword(auth, email, password);
   } catch (err) {
@@ -55,4 +59,40 @@ export const sendPasswordReset = async (email) => {
 
 export const logout = () => {
   signOut(auth);
+};
+
+export const currentUser = async (email) => {
+  const usersRef = collection(db, "users");
+  const userQuery = query(usersRef, where("email", "==", email));
+  const querySnap = await getDocs(userQuery);
+  querySnap.forEach((doc) => {
+    if(doc.data().email === email) {
+      return doc.data().displayName;
+    }
+  });
+}
+
+export const fetchUser = async (uid) => {
+  try {
+    const q = query(collection(db, "users"), where("uid", "==", uid));
+    const userDoc = await getDocs(q);
+    const data = userDoc.docs[0].data();
+    return data;
+  } catch (err) {
+    console.error(err);
+    alert("An error occured while fetching user data");
+  }
+};
+
+export const updateUser = async (uid,profileImage,displayName) => {
+  try {
+    const userDoc = doc(db, "users", uid);
+    const results = await updateDoc(userDoc, {
+      profileImage: profileImage,
+      displayName: displayName,
+    }).then(() => {return;});
+  } catch (err) {
+    console.error(err);
+    alert("An error occured while fetching user data");
+  }
 };

@@ -10,6 +10,7 @@ import SignIn from "./components/SignIn";
 import Register from "./components/Register";
 import NewThread from "./components/NewThread";
 import Thread from "./components/Thread";
+import Dashboard from "./components/Dashboard";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -24,6 +25,7 @@ root.render(
           <Route path="category/:catId" element={<Category />} />
           <Route path="newthread/:catId" element={<NewThread />} />
           <Route path="thread/:threadId" element={<Thread />} />
+          <Route path="account/" element={<Dashboard />} />
           {/* <Route path="auth" element={<Auth />} /> */}
         </Route>
       </Routes>

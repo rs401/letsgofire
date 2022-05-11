@@ -11,7 +11,6 @@ const CatList = () => {
 
   async function fetchCats() {
     await getCats().then(data => {
-      console.log("data",data);
       setCats(data);
     });
   }
