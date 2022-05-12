@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
@@ -9,20 +9,23 @@ import { getStates, getThreads } from "../services/category-svc";
 
 function Category() {
   let params = useParams();
-  let filteredThreads = [];
   let states = getStates();
   const cat = params.catId;
   const [location, setLocation] = useState("");
   const [threads, setThreads] = useState([]);
   const [fetched, setFetched] = useState(false);
 
+  const filteredThreads = useMemo(() => {
+    if(location === "") {
+      return threads;
+    } else {
+      return threads.filter((thread) => thread.data().state === location);
+    }
+  },[location, threads]);
+
   async function fetchThreads() {
     try {
       const threadsData = await getThreads(cat);
-      // const items = threadsData.data.listThreads.items;
-      // items.sort((a, b) => {
-      //   return a.updatedAt > b.updatedAt ? 1 : -1;
-      // });
       setThreads(threadsData);
     } catch (err) {
       console.log("error fetching threads.", err);
@@ -34,7 +37,7 @@ function Category() {
       setFetched(true);
       fetchThreads();
     }
-  }, []);
+  }, [fetched]);
 
   function filterByState(e) {
     if (e.target.value === "") {
@@ -42,14 +45,6 @@ function Category() {
     } else {
       setLocation(e.target.value);
     }
-    threads.filter((thread) => thread.state === location);
-  }
-
-  if (location === "") {
-    filteredThreads = threads;
-  }
-  if (location !== "") {
-    filteredThreads = threads.filter((thread) => thread.state === location);
   }
 
   return (
