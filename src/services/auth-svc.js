@@ -32,7 +32,6 @@ export const logInWithEmailAndPassword = async (email, password) => {
   } catch (err) {
     console.error(err);
     alert(err.message);
-    // <Alert variant="danger">{err}</Alert>
   }
 };
 
@@ -78,7 +77,7 @@ export const fetchUser = async (uid) => {
     return data;
   } catch (err) {
     console.error(err);
-    alert("An error occured while fetching user data");
+    alert("An error occurred while fetching user data");
   }
 };
 
@@ -91,6 +90,6 @@ export const updateUser = async (uid,profileImage,displayName) => {
     });
   } catch (err) {
     console.error(err);
-    alert("An error occured while fetching user data");
+    alert("An error occurred while fetching user data");
   }
 };
