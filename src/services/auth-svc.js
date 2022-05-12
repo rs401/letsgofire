@@ -1,4 +1,3 @@
-import Alert from "react-bootstrap/Alert";
 import {
   GoogleAuthProvider,
   signInWithPopup,
@@ -14,7 +13,6 @@ import {
   getDocs,
   updateDoc,
   doc,
-  getDoc,
 } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 
@@ -87,10 +85,10 @@ export const fetchUser = async (uid) => {
 export const updateUser = async (uid,profileImage,displayName) => {
   try {
     const userDoc = doc(db, "users", uid);
-    const results = await updateDoc(userDoc, {
+    await updateDoc(userDoc, {
       profileImage: profileImage,
       displayName: displayName,
-    }).then(() => {return;});
+    });
   } catch (err) {
     console.error(err);
     alert("An error occured while fetching user data");

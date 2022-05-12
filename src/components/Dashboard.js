@@ -9,9 +9,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { auth, db } from "../firebase-config";
+import { auth } from "../firebase-config";
 import { fetchUser, updateUser } from "../services/auth-svc";
-import { query, collection, getDocs, where } from "firebase/firestore";
 
 function Dashboard() {
   const [user, loading, error] = useAuthState(auth);
@@ -21,29 +20,6 @@ function Dashboard() {
   const [showsuccess, setShowsuccess] = useState(false);
   const [showerr, setShowerr] = useState(false);
   const [errmsg, setErrmsg] = useState("");
-  const [currUser, setCurrUser] = useState({});
-
-  // const fetchUser = async () => {
-  //   try {
-  //     const q = query(collection(db, "users"), where("uid", "==", user.uid));
-  //     const doc = await getDocs(q);
-  //     const data = doc.docs[0].data();
-  //     return data;
-  //     // setDisplayName(data.displayName);
-  //     // setProfileImage(data.profileImage);
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert("An error occured while fetching user data");
-  //   }
-  // };
-
-  async function signOut() {
-    try {
-      await auth.signOut();
-    } catch (error) {
-      console.log("error signing out: ", error);
-    }
-  }
 
   async function handleSaveAccountChanges(e) {
     e.preventDefault();
@@ -54,7 +30,7 @@ function Dashboard() {
     }
     // update user info in users collection
     updateUser(user.uid, profileImage, displayName).then(() => {
-      navigate("/account");
+      navigate("/account", { replace: true });
     });
   }
 
@@ -67,7 +43,10 @@ function Dashboard() {
         setProfileImage(data.profileImage);
       });
     }
-  }, [user, loading]);
+    if(error) {
+      console.log("error in auth state: ", error);
+    }
+  }, [user, loading, error, navigate]);
 
   if (user) {
     return (

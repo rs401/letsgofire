@@ -60,7 +60,10 @@ function Thread() {
     if (loading) return;
     fetchThread();
     fetchReplies();
-  }, [user, loading]);
+    if (error) {
+      console.log("error in auth state: ", error);
+    }
+  }, );
 
   if (replies.length === 0) {
     return (

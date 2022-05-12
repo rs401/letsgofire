@@ -9,14 +9,12 @@ import "./App.css";
 import { auth } from "../firebase-config";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { fetchUser } from "../services/auth-svc";
 
-// import { addCat } from "../services/category-svc";
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
-  const [currUser, setCurrUser] = useState({});
+  const [currUser, setCurrUser] = useState(null);
 
   let allTheThings = [
     "Fishing 🎣",
@@ -30,29 +28,23 @@ function App() {
   ];
   let accountNav;
 
-  /* seed data */
-  // const [seeded, setSeeded] = useState(false);
-  // if(!seeded) {
-  //   setSeeded(true);
-  //   let cats = ["Academic","Art","ATV","Audio","Aviation","Baking","Band","Ball Sports","Beach","Bicycle","Boat","Brewing","Camping","Carnival","Children","Coffee","Combat Sports","Comic Books","Computers","Concert","County Fair","Crafts","Dancing","Dog Park","E-Sports","Electronics","Exploring","Farming","Festival","Fishing","Fitness","Gardening","Geo Caching","Glass Blowing","Go Karts","Gun Range","Hiking","Horse Riding","Hunting","Ice Sports","Magnet Fishing","Martial Arts","Movies","Motor Sports","Mountain Biking","Mushroom Hunting","Music","Other","Park","Pets","Photography","Playground","Recreation","Water Sports","Wheeled Sports"];
-  //   cats.forEach((cat) => {
-  //     addCat(cat);
-  //   });
-  // }
-
   useEffect(() => {
     if (loading) return;
     if (user) {
-      // setCurrUser(user);
-      fetchUser(user.uid).then((data) => {
-        setCurrUser(data);
-      });
+      setCurrUser(user);
     };
-  }, [user, loading]);
+    if(error) {
+      console.log("error in auth state: ", error.message);
+    }
+  }, [user, loading, error]);
 
   async function signOut() {
     try {
-      await auth.signOut();
+      await auth.signOut().then(() => {
+        console.log("sign out clicked");
+        setCurrUser(null);
+        navigate("/", { replace: true });
+      });
     } catch (error) {
       console.log("error signing out: ", error);
     }
@@ -63,9 +55,7 @@ function App() {
   } else {
     accountNav = (
       <>
-        <Nav.Link href="/account">
-          Welcome, {currUser.displayName}!
-        </Nav.Link>
+        <Nav.Link href="/account">Account Dashboard</Nav.Link>
         ;<Nav.Link onClick={signOut}>Sign Out</Nav.Link>;
       </>
     );
