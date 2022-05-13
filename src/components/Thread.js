@@ -58,12 +58,18 @@ function Thread() {
 
   useEffect(() => {
     if (loading) return;
-    fetchThread();
-    fetchReplies();
+    // fetchThread();
+    getThread(params.threadId).then((data) => {
+      setThread(data);
+    });
+    // fetchReplies();
+    getReplies(params.threadId).then((data) => {
+      setReplies(data);
+    });
     if (error) {
       console.log("error in auth state: ", error);
     }
-  }, );
+  }, [loading, error,params.threadId]);
 
   if (replies.length === 0) {
     return (
@@ -73,7 +79,35 @@ function Thread() {
             <Card.Title>{thread.title}</Card.Title>
             <Card.Text>{thread.message}</Card.Text>
           </Card.Body>
+          <Card.Footer>
+            <Button onClick={handleReplyClick}>Reply</Button>
+          </Card.Footer>
         </Card>
+        {showReplyForm ? (
+          <Container className="mb-2">
+            <Form
+              onSubmit={(e) => {
+                handleAddReply(e);
+              }}
+            >
+              <Form.Group className="mb-3">
+                <Form.Label>Your reply message:</Form.Label>
+                <Form.Control
+                  value={newReplyText}
+                  onChange={(e) => {
+                    setNewReplyText(e.target.value);
+                  }}
+                  as="textarea"
+                  rows={3}
+                />
+              </Form.Group>
+
+              <Button variant="primary" type="submit">
+                Submit
+              </Button>
+            </Form>
+          </Container>
+        ) : null}
         <ListGroup>
           <ListGroup.Item>
             <Placeholder xs={12}>
@@ -159,7 +193,7 @@ function Thread() {
           {replies.map((reply) => {
             return (
               <ListGroup.Item key={reply.id} variant="light" className="p-3">
-                <Reply reply={reply} />
+                <Reply reply={reply.message} />
               </ListGroup.Item>
             );
           })}
