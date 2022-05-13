@@ -26,3 +26,4 @@ notes.md
 firebase-config.js
 .env
 api.js
+*.log

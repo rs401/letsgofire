@@ -22,3 +22,6 @@ exports.addUserToFirestore = functions.auth.user().onCreate((user) => {
 /* letsgoapi */
 // const letsgoapi = require("./api");
 // exports.letsgoapi = letsgoapi.letsgoapi;
+
+/* update thread count */
+exports.threadCount = require("./thread-count");
