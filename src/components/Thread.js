@@ -16,6 +16,7 @@ import { auth } from "../firebase-config";
 function Thread() {
   const [user, loading, error] = useAuthState(auth);
   const params = useParams();
+  const [loaded, setLoaded] = useState(false);
   const [thread, setThread] = useState({});
   const [replies, setReplies] = useState([]);
   const [showReplyForm, setShowReplyForm] = useState(false);
@@ -46,29 +47,24 @@ function Thread() {
     }
   }
 
-  async function fetchThread() {
-    let t = await getThread(params.threadId);
-    setThread(t);
-  }
-
-  async function fetchReplies() {
-    let r = await getReplies(params.threadId);
-    setReplies(r);
-  }
-
   useEffect(() => {
     if (loading) return;
-    // fetchThread();
-    getThread(params.threadId).then((data) => {
-      setThread(data);
-    });
-    // fetchReplies();
-    getReplies(params.threadId).then((data) => {
-      setReplies(data);
-    });
+    async function fetchThread() {
+      let t = await getThread(params.threadId);
+      setThread(t);
+    }
+  
+    async function fetchReplies() {
+      let r = await getReplies(params.threadId);
+      setReplies(r);
+    }
+
+    fetchThread().catch((err) => {console.log("error fetching threads: ", err);});
+    fetchReplies().catch((err) => {console.log("error fetching replies: ", err);});
     if (error) {
       console.log("error in auth state: ", error);
     }
+    setLoaded(true);
   }, [loading, error,params.threadId]);
 
   if (replies.length === 0) {
@@ -108,6 +104,8 @@ function Thread() {
             </Form>
           </Container>
         ) : null}
+        {!loaded ? (
+
         <ListGroup>
           <ListGroup.Item>
             <Placeholder xs={12}>
@@ -150,6 +148,9 @@ function Thread() {
             </Placeholder>
           </ListGroup.Item>
         </ListGroup>
+        ) : (
+          <div>No replies yet.</div>
+        )}
       </div>
     );
   } else {
@@ -193,7 +194,7 @@ function Thread() {
           {replies.map((reply) => {
             return (
               <ListGroup.Item key={reply.id} variant="light" className="p-3">
-                <Reply reply={reply.message} />
+                <Reply reply={reply} />
               </ListGroup.Item>
             );
           })}
