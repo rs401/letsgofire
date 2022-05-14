@@ -27,3 +27,5 @@ exports.addUserToFirestore = functions.auth.user().onCreate((user) => {
 exports.threadCount = require("./thread-count");
 /* update reply count */
 exports.replyCount = require("./reply-count");
+/* thread management */
+exports.threadManagement = require("./thread-management");

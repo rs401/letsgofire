@@ -1,19 +1,33 @@
-import {db} from "../firebase-config";
-import { collection, doc, addDoc, setDoc, getDocs, getDoc, query, where, Timestamp } from "firebase/firestore";
-// const catRef = collection(db,"category");
+import { db } from "../firebase-config";
+import {
+  collection,
+  doc,
+  addDoc,
+  setDoc,
+  getDocs,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
+  Timestamp,
+} from "firebase/firestore";
+// import { getFunctions, httpsCallable } from "firebase/functions";
+
+// const functions = getFunctions();
 
 export const addCat = async (cat) => {
   try {
-    await setDoc(doc(db, "category", cat), {name: cat});
+    await setDoc(doc(db, "category", cat), { name: cat });
   } catch (err) {
     console.log("error adding category: ", err);
   }
-}
+};
 
 export const getCats = async () => {
   try {
     let catlist = [];
-    const docs = await getDocs(collection(db, "category"))
+    const docs = await getDocs(collection(db, "category"));
     docs.forEach((cat) => {
       catlist.push(cat);
     });
@@ -21,7 +35,7 @@ export const getCats = async () => {
   } catch (err) {
     console.log("error getting all categories: ", err);
   }
-}
+};
 
 export async function getThreads(catid) {
   try {
@@ -29,7 +43,7 @@ export async function getThreads(catid) {
     const q = query(collection(db, "thread"), where("category", "==", catid));
     const snapshot = await getDocs(q);
     snapshot.forEach((data) => {
-      threadlist.push(data)
+      threadlist.push(data);
     });
     return threadlist;
   } catch (err) {
@@ -43,8 +57,33 @@ export async function createThread(t) {
     t.updatedAt = Timestamp.now();
     let data = await addDoc(collection(db, "thread"), t);
     return data.id;
+
+    // Switching to cloud function call - NOPE not tuhdayy
+    // const callFunc = httpsCallable(functions, "threadManagement-createThread");
+    // const data = await callFunc(t);//.then((result) => result.id);
+    // return data.id;
   } catch (err) {
     console.log("error adding thread: ", err);
+  }
+}
+
+export async function updateThread(tid, t) {
+  try {
+    t.updatedAt = Timestamp.now();
+    const docRef = doc(db, "thread", tid);
+    await updateDoc(docRef, t).then(() => {return;});
+    
+  } catch (err) {
+    console.log("error updating thread: ", err);
+  }
+}
+
+export async function deleteThread(threadId) {
+  try {
+    const docRef = doc(db, "thread", threadId);
+    await deleteDoc(docRef).then(() => {return;});
+  } catch (err) {
+    console.log("error deleting thread: ", err);
   }
 }
 
@@ -70,7 +109,7 @@ export async function getReplies(threadId) {
     const q = query(collection(db, "reply"), where("thread", "==", threadId));
     const docs = await getDocs(q);
     docs.forEach((data) => {
-      replylist.push(data)
+      replylist.push(data);
     });
     return replylist;
   } catch (err) {
@@ -88,7 +127,7 @@ export async function createReply(r) {
     console.log("error adding reply: ", err);
   }
 }
-
+// prettier-ignore
 export const getStates = () => {
   return ["AL","AK","AZ","AR","AS","CA","CO","CT","DE","DC","FL","GA","GU","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","CM","OH","OK","OR","PA","PR","RI","SC","SD","TN","TX","TT","UT","VT","VA","VI","WA","WV","WI","WY"];
-}
+};
