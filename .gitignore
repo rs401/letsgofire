@@ -27,3 +27,4 @@ firebase-config.js
 .env
 api.js
 *.log
+.firebase/

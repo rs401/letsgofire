@@ -51,14 +51,14 @@ service cloud.firestore {
     match /thread/{threadId} {
       allow read;
       allow create: if isSignedIn() && isUser(incomingData().owner);
-      allow update, delete: if isSignedIn() && isUser(existingData().owner) && isUser(incomingData().owner);
+      allow update, delete: if isSignedIn() && isUser(existingData().owner);
     }
 
     // Replies
     match /reply/{replyId} {
       allow read;
       allow create: if isSignedIn() && isUser(incomingData().owner);
-      allow update, delete: if isSignedIn() && isUser(existingData().owner) && isUser(incomingData().owner);
+      allow update, delete: if isSignedIn() && isUser(existingData().owner);
     }
 
     // example application for functions
