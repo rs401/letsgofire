@@ -12,22 +12,17 @@ exports.threadCountCreate = functions.firestore
     const catDoc = await categoryRef.get()
     // First thread 
     if(catDoc.data().count === undefined || isNaN(catDoc.data().count)) {
-      categoryRef.update({count: 1}).then(result => {
+      categoryRef.update({count: 1}).then(() => {
         console.log(`Thread count undefined || isNaN\nupdated for Category: ${newThread.category} -- count: ${catDoc.data().count}`);
       });
       return;
     }
 
-    /* need to run emulator and try using postman to test functions */
-    /* need to run emulator and try using postman to test functions */
-    /* need to run emulator and try using postman to test functions */
-    /* need to run emulator and try using postman to test functions */
-
     // Thread count exists
     let newCount = catDoc.data().count;
     console.log(`thread count exists. categoryRef.count: ${catDoc.data().count}`);
     newCount += 1;
-    categoryRef.update({count: newCount}).then(result => {
+    categoryRef.update({count: newCount}).then(() => {
       console.log(`Thread count updated for Category: ${newThread.category} - new count: ${newCount}`);
     });
 
@@ -43,7 +38,7 @@ exports.threadCountDelete = functions.firestore
     // Decrease thread count
     let newCount = catDoc.data().count;
     newCount -= 1;
-    categoryRef.update({count: newCount}).then(result => {
+    categoryRef.update({count: newCount}).then(() => {
       console.log(`Thread count updated for Category: ${deletedThread.category}`);
     });
 
