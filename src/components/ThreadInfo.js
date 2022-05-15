@@ -125,7 +125,7 @@ const ThreadInfo = ({tid}) => {
           <Card.Text>{thread.message}</Card.Text>
         </Card.Body>
         <Card.Footer>
-          {user.uid === thread.owner ? (
+          {user !== null && user.uid === thread.owner ? (
             <>
               <Button className="me-2" size="sm" onClick={handleEditClick}>
                 Edit
