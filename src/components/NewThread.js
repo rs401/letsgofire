@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { getStates, createThread } from "../services/category-svc";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase-config";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { AuthContext } from "./App";
 
 const NewThread = () => {
   let navigate = useNavigate();
@@ -15,12 +14,7 @@ const NewThread = () => {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState(''); 
   const [usstate, setUsstate] = useState('');
-  const [user, loading, error] = useAuthState(auth);
-
-  useEffect(() => {
-    if (loading) return;
-    // if (!user) return navigate("/");
-  }, [user, loading]);
+  const user = useContext(AuthContext);
 
   async function handleAddThread(e) {
     e.preventDefault();

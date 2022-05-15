@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import React, { useEffect, useState, useContext } from "react";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase-config";
+import { AuthContext } from "./App";
 import {
   registerWithEmailAndPassword,
   signInWithGoogle,
@@ -15,7 +14,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-  const [user, loading, error] = useAuthState(auth);
+  const user = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [errMsg, setErrMsg] = useState("");
@@ -45,12 +44,8 @@ const Register = () => {
   }
 
   useEffect(() => {
-    if (loading) return;
     if (user) navigate("/");
-    if (error) {
-      console.log("error in auth state: ", error);
-    }
-  }, [user, loading, error, navigate]);
+  }, [user, navigate]);
 
   return (
     <div>

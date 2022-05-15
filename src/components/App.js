@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -10,6 +10,7 @@ import { auth } from "../firebase-config";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 
+export const AuthContext = createContext();
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
@@ -32,8 +33,8 @@ function App() {
     if (loading) return;
     if (user) {
       setCurrUser(user);
-    };
-    if(error) {
+    }
+    if (error) {
       console.log("error in auth state: ", error.message);
     }
   }, [user, loading, error]);
@@ -55,52 +56,54 @@ function App() {
   } else {
     accountNav = (
       <>
-        <Nav.Link href="/account">Account Dashboard</Nav.Link>
-        ;<Nav.Link onClick={signOut}>Sign Out</Nav.Link>;
+        <Nav.Link href="/account">Account Dashboard</Nav.Link>;
+        <Nav.Link onClick={signOut}>Sign Out</Nav.Link>;
       </>
     );
   }
 
   return (
-    <Container>
-      <Navbar bg="dark" variant="dark" expand="lg" className="shadow mb-2">
-        <Container>
-          <Navbar.Brand>Lets Go</Navbar.Brand>
+    <AuthContext.Provider value={user}>
+      <Container>
+        <Navbar bg="dark" variant="dark" expand="lg" className="shadow mb-2">
+          <Container>
+            <Navbar.Brand>Lets Go</Navbar.Brand>
 
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/">About</Nav.Link>
-              <NavDropdown title="Info" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-            <Nav className="justify-content-end">{accountNav}</Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-      <div className="p-2">
-        <h3>
-          Lets Go <ReactRotatingText items={allTheThings} />
-        </h3>
-      </div>
-      <Outlet />
-      <div style={{ height: 100 }}></div>
-      <div className="mt-4 mb-2 p-3 bg-dark text-light">
-        &copy; 2022 Lets Go
-      </div>
-    </Container>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="me-auto">
+                <Nav.Link href="/">Home</Nav.Link>
+                <Nav.Link href="/">About</Nav.Link>
+                <NavDropdown title="Info" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.2">
+                    Another action
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.3">
+                    Something
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#action/3.4">
+                    Separated link
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+              <Nav className="justify-content-end">{accountNav}</Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+        <div className="p-2">
+          <h3>
+            Lets Go <ReactRotatingText items={allTheThings} />
+          </h3>
+        </div>
+        <Outlet />
+        <div style={{ height: 100 }}></div>
+        <div className="mt-4 mb-2 p-3 bg-dark text-light">
+          &copy; 2022 Lets Go
+        </div>
+      </Container>
+    </AuthContext.Provider>
   );
 }
 

@@ -26,7 +26,6 @@ root.render(
           <Route path="newthread/:catId" element={<NewThread />} />
           <Route path="thread/:threadId" element={<Thread />} />
           <Route path="account/" element={<Dashboard />} />
-          {/* <Route path="auth" element={<Auth />} /> */}
         </Route>
       </Routes>
     </Router>

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Toast from "react-bootstrap/Toast";
@@ -9,11 +8,11 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { auth } from "../firebase-config";
 import { fetchUser, updateUser } from "../services/auth-svc";
+import { AuthContext } from "./App";
 
 function Dashboard() {
-  const [user, loading, error] = useAuthState(auth);
+  const user = useContext(AuthContext);
   const navigate = useNavigate();
   const [displayName, setDisplayName] = useState("");
   const [profileImage, setProfileImage] = useState("");
@@ -35,18 +34,13 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    if (loading) return;
-    if (!user) return navigate("/");
     if (user) {
       fetchUser(user.uid).then((data) => {
         setDisplayName(data.displayName);
         setProfileImage(data.profileImage);
       });
     }
-    if(error) {
-      console.log("error in auth state: ", error);
-    }
-  }, [user, loading, error, navigate]);
+  }, [user, navigate]);
 
   if (user) {
     return (
