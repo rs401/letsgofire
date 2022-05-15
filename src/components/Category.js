@@ -84,16 +84,6 @@ function Category() {
           </Button>{" "}
         </div>
       </Stack>
-      {/* <Row className="my-2 shadow-sm">
-        <Col md={4}>
-          <div className="p-3">Category: {cat}</div>
-        </Col>
-        <Col md={{ span: 4, offset: 4 }}>
-          <Button href={`/newthread/${cat}`} variant="outline-primary">
-            New Thread
-          </Button>{" "}
-        </Col>
-      </Row> */}
 
       <ListGroup className="shadow-sm">
         {filteredThreads.map((thread, index) => {
@@ -110,10 +100,12 @@ function Category() {
               >
                 <div>{thread.data().title}</div>
                 <div>
-                  <span>{thread.data().state}</span>
+                  <Badge bg="primary" pill>
+                    State: {thread.data().state}
+                  </Badge>
                   {"  "}
                   <Badge bg="primary" pill>
-                    1
+                    Replies: {thread.data().count || 0}
                   </Badge>
                 </div>
               </ListGroup.Item>

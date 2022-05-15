@@ -39,6 +39,7 @@ function Thread() {
     e.preventDefault();
     if (newReplyText.trim().length < 20) {
       setShowErr(true);
+      return;
     }
     // call a method in category-svc to add reply
     let r = {
@@ -51,6 +52,7 @@ function Thread() {
       setNewReplyText("");
       toggleShowReplyForm();
       console.log("added new reply");
+      setUpdateReply((val) => (val += 1));
     }
   }
 
