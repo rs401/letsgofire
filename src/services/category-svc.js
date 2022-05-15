@@ -78,12 +78,32 @@ export async function updateThread(tid, t) {
   }
 }
 
+export async function updateReply(rid, r) {
+  try {
+    r.updatedAt = Timestamp.now();
+    const docRef = doc(db, "reply", rid);
+    await updateDoc(docRef, r).then(() => {return;});
+    
+  } catch (err) {
+    console.log("error updating reply: ", err);
+  }
+}
+
 export async function deleteThread(threadId) {
   try {
     const docRef = doc(db, "thread", threadId);
     await deleteDoc(docRef).then(() => {return;});
   } catch (err) {
     console.log("error deleting thread: ", err);
+  }
+}
+
+export async function deletereply(replyId) {
+  try {
+    const docRef = doc(db, "reply", replyId);
+    await deleteDoc(docRef).then(() => {return;});
+  } catch (err) {
+    console.log("error deleting reply: ", err);
   }
 }
 
