@@ -15,8 +15,7 @@ import {
 } from "../services/category-svc";
 import { AuthContext } from "./App";
 
-
-const ThreadInfo = ({tid}) => {
+const ThreadInfo = ({ tid }) => {
   const user = useContext(AuthContext);
   const [thread, setThread] = useState({});
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
@@ -45,7 +44,6 @@ const ThreadInfo = ({tid}) => {
   }, [threadUpdate, tid]);
 
   useEffect(() => {
-
     async function fetchThread() {
       let t = await getThread(tid);
       setThread(t);
@@ -53,9 +51,7 @@ const ThreadInfo = ({tid}) => {
     fetchThread().catch((err) => {
       console.log("error fetching threads: ", err);
     });
-
-  }, [tid])
-  
+  }, [tid]);
 
   async function handleDeleteThread() {
     toggleShowConfirmDelete();
@@ -199,21 +195,21 @@ const ThreadInfo = ({tid}) => {
         ) : null}
       </Card>
       <ToastContainer className="p-3" position="middle-center">
-          <Toast
-            onClose={() => setShowErr(false)}
-            show={showErr}
-            delay={5000}
-            autohide
-            bg="danger"
-          >
-            <Toast.Header>
-              <strong className="me-auto">Error</strong>
-            </Toast.Header>
-            <Toast.Body>
+        <Toast
+          onClose={() => setShowErr(false)}
+          show={showErr}
+          delay={5000}
+          autohide
+          bg="danger"
+        >
+          <Toast.Header>
+            <strong className="me-auto">Error</strong>
+          </Toast.Header>
+          <Toast.Body>
             Values cannot be empty for: title, message, state.
-            </Toast.Body>
-          </Toast>
-        </ToastContainer>
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
     </div>
   );
 };

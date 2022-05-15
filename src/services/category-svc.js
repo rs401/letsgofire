@@ -37,6 +37,22 @@ export const getCats = async () => {
   }
 };
 
+export async function getCat(cat) {
+  try {
+    const docRef = doc(db, "category", cat);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+      return null;
+    }
+  } catch (err) {
+    console.log("error getting document: ", err);
+  }
+}
+
 export async function getThreads(catid) {
   try {
     let threadlist = [];
@@ -71,8 +87,9 @@ export async function updateThread(tid, t) {
   try {
     t.updatedAt = Timestamp.now();
     const docRef = doc(db, "thread", tid);
-    await updateDoc(docRef, t).then(() => {return;});
-    
+    await updateDoc(docRef, t).then(() => {
+      return;
+    });
   } catch (err) {
     console.log("error updating thread: ", err);
   }
@@ -82,8 +99,9 @@ export async function updateReply(rid, r) {
   try {
     r.updatedAt = Timestamp.now();
     const docRef = doc(db, "reply", rid);
-    await updateDoc(docRef, r).then(() => {return;});
-    
+    await updateDoc(docRef, r).then(() => {
+      return;
+    });
   } catch (err) {
     console.log("error updating reply: ", err);
   }
@@ -92,7 +110,9 @@ export async function updateReply(rid, r) {
 export async function deleteThread(threadId) {
   try {
     const docRef = doc(db, "thread", threadId);
-    await deleteDoc(docRef).then(() => {return;});
+    await deleteDoc(docRef).then(() => {
+      return;
+    });
   } catch (err) {
     console.log("error deleting thread: ", err);
   }
@@ -101,7 +121,9 @@ export async function deleteThread(threadId) {
 export async function deletereply(replyId) {
   try {
     const docRef = doc(db, "reply", replyId);
-    await deleteDoc(docRef).then(() => {return;});
+    await deleteDoc(docRef).then(() => {
+      return;
+    });
   } catch (err) {
     console.log("error deleting reply: ", err);
   }

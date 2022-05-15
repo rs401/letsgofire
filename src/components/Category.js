@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
-import Card from "react-bootstrap/Card";
+import Stack from "react-bootstrap/Stack";
 import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import { useParams, Link } from "react-router-dom";
-import { getStates, getThreads } from "../services/category-svc";
+import { getStates, getThreads, getCat } from "../services/category-svc";
 
 function Category() {
   let params = useParams();
@@ -14,30 +14,41 @@ function Category() {
   const [location, setLocation] = useState("");
   const [threads, setThreads] = useState([]);
   const [fetched, setFetched] = useState(false);
+  const [catData, setCatData] = useState({});
 
   const filteredThreads = useMemo(() => {
-    if(location === "") {
+    if (location === "") {
       return threads;
     } else {
       return threads.filter((thread) => thread.data().state === location);
     }
-  },[location, threads]);
-
-  async function fetchThreads() {
-    try {
-      const threadsData = await getThreads(cat);
-      setThreads(threadsData);
-    } catch (err) {
-      console.log("error fetching threads.", err);
-    }
-  }
+  }, [location, threads]);
 
   useEffect(() => {
+    async function fetchThreads() {
+      try {
+        const threadsData = await getThreads(cat);
+        setThreads(threadsData);
+      } catch (err) {
+        console.log("error fetching threads.", err);
+      }
+    }
+
+    async function fetchCat() {
+      try {
+        const data = await getCat(cat);
+        setCatData(data);
+      } catch (err) {
+        console.log("error fetching threads.", err);
+      }
+    }
+
     if (!fetched) {
       setFetched(true);
       fetchThreads();
+      fetchCat();
     }
-  }, [fetched]);
+  }, [fetched, cat]);
 
   function filterByState(e) {
     if (e.target.value === "") {
@@ -63,16 +74,26 @@ function Category() {
           );
         })}
       </Form.Select>
-      <Card className="my-2 shadow-sm">
-        <Card.Body>
-          <div className="p-3">Category: <h3>{cat}</h3></div>
-          <div className="justify-content-end">
-            <Button href={`/newthread/${cat}`} variant="outline-primary">
-              New Thread
-            </Button>{" "}
-          </div>
-        </Card.Body>
-      </Card>
+      <Stack direction="horizontal" gap={3}>
+        <div>Category: {cat}</div>
+        <div className="ms-auto">Thread Count: {catData.count || 0}</div>
+        <div className="vr" />
+        <div className="py-2">
+          <Button href={`/newthread/${cat}`} variant="outline-primary">
+            New Thread
+          </Button>{" "}
+        </div>
+      </Stack>
+      {/* <Row className="my-2 shadow-sm">
+        <Col md={4}>
+          <div className="p-3">Category: {cat}</div>
+        </Col>
+        <Col md={{ span: 4, offset: 4 }}>
+          <Button href={`/newthread/${cat}`} variant="outline-primary">
+            New Thread
+          </Button>{" "}
+        </Col>
+      </Row> */}
 
       <ListGroup className="shadow-sm">
         {filteredThreads.map((thread, index) => {

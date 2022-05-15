@@ -46,9 +46,8 @@ const CatList = () => {
                 >
                   <div>{cat.id}</div>
                   <div>
-                    {/* <small className="pe-3">Threads:{cat.threads}</small>
-                    <small className="pe-3">Messages: {cat.messages}</small>
-                    <small className="pe-3">Views: {cat.views}</small> */}
+                    <small className="pe-3">Threads: {cat.data().count ||0}</small>
+                    {/* <small className="pe-3">Messages: {cat.messages}</small> */}
                   </div>
                 </ListGroup.Item>
               </Link>
