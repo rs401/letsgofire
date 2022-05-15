@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
-import Placeholder from "react-bootstrap/Placeholder";
 import { Link } from "react-router-dom";
 import { getCats } from "../services/category-svc";
+import ListGroupPlaceholder from "./ListGroupPlaceholder";
 
 
 
@@ -24,48 +24,7 @@ const CatList = () => {
     return (
       <div className="mt-3">
         <h3>Categories</h3>
-        <ListGroup>
-          <ListGroup.Item>
-            <Placeholder xs={12}>
-              <Placeholder as="p" animation="glow" />
-            </Placeholder>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Placeholder xs={12}>
-              <Placeholder as="p" animation="glow" />
-            </Placeholder>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Placeholder xs={12}>
-              <Placeholder as="p" animation="glow" />
-            </Placeholder>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Placeholder xs={12}>
-              <Placeholder as="p" animation="glow" />
-            </Placeholder>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Placeholder xs={12}>
-              <Placeholder as="p" animation="glow" />
-            </Placeholder>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Placeholder xs={12}>
-              <Placeholder as="p" animation="glow" />
-            </Placeholder>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Placeholder xs={12}>
-              <Placeholder as="p" animation="glow" />
-            </Placeholder>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Placeholder xs={12}>
-              <Placeholder as="p" animation="glow" />
-            </Placeholder>
-          </ListGroup.Item>
-        </ListGroup>
+        <ListGroupPlaceholder />
       </div>
     );
   } else {
