@@ -10,12 +10,14 @@ import {
   deleteDoc,
   query,
   where,
+  orderBy,
   Timestamp,
 } from "firebase/firestore";
 // import { getFunctions, httpsCallable } from "firebase/functions";
 
 // const functions = getFunctions();
 
+/** Category */
 export const addCat = async (cat) => {
   try {
     await setDoc(doc(db, "category", cat), { name: cat });
@@ -53,10 +55,15 @@ export async function getCat(cat) {
   }
 }
 
+/** Thread */
 export async function getThreads(catid) {
   try {
     let threadlist = [];
-    const q = query(collection(db, "thread"), where("category", "==", catid));
+    const q = query(
+      collection(db, "thread"),
+      where("category", "==", catid),
+      orderBy("updatedAt", "desc")
+    );
     const snapshot = await getDocs(q);
     snapshot.forEach((data) => {
       threadlist.push(data);
@@ -95,18 +102,6 @@ export async function updateThread(tid, t) {
   }
 }
 
-export async function updateReply(rid, r) {
-  try {
-    r.updatedAt = Timestamp.now();
-    const docRef = doc(db, "reply", rid);
-    await updateDoc(docRef, r).then(() => {
-      return;
-    });
-  } catch (err) {
-    console.log("error updating reply: ", err);
-  }
-}
-
 export async function deleteThread(threadId) {
   try {
     const docRef = doc(db, "thread", threadId);
@@ -115,17 +110,6 @@ export async function deleteThread(threadId) {
     });
   } catch (err) {
     console.log("error deleting thread: ", err);
-  }
-}
-
-export async function deletereply(replyId) {
-  try {
-    const docRef = doc(db, "reply", replyId);
-    await deleteDoc(docRef).then(() => {
-      return;
-    });
-  } catch (err) {
-    console.log("error deleting reply: ", err);
   }
 }
 
@@ -145,20 +129,7 @@ export async function getThread(threadId) {
   }
 }
 
-export async function getReplies(threadId) {
-  try {
-    let replylist = [];
-    const q = query(collection(db, "reply"), where("thread", "==", threadId));
-    const docs = await getDocs(q);
-    docs.forEach((data) => {
-      replylist.push(data);
-    });
-    return replylist;
-  } catch (err) {
-    console.log("error getting replies: ", err);
-  }
-}
-
+/** Reply */
 export async function createReply(r) {
   try {
     r.createdAt = Timestamp.now();
@@ -169,6 +140,48 @@ export async function createReply(r) {
     console.log("error adding reply: ", err);
   }
 }
+
+export async function updateReply(rid, r) {
+  try {
+    r.updatedAt = Timestamp.now();
+    const docRef = doc(db, "reply", rid);
+    await updateDoc(docRef, r).then(() => {
+      return;
+    });
+  } catch (err) {
+    console.log("error updating reply: ", err);
+  }
+}
+
+export async function deletereply(replyId) {
+  try {
+    const docRef = doc(db, "reply", replyId);
+    await deleteDoc(docRef).then(() => {
+      return;
+    });
+  } catch (err) {
+    console.log("error deleting reply: ", err);
+  }
+}
+
+export async function getReplies(threadId) {
+  try {
+    let replylist = [];
+    const q = query(
+      collection(db, "reply"),
+      where("thread", "==", threadId),
+      orderBy("createdAt")
+    );
+    const docs = await getDocs(q);
+    docs.forEach((data) => {
+      replylist.push(data);
+    });
+    return replylist;
+  } catch (err) {
+    console.log("error getting replies: ", err);
+  }
+}
+
 // prettier-ignore
 export const getStates = () => {
   return ["AL","AK","AZ","AR","AS","CA","CO","CT","DE","DC","FL","GA","GU","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","CM","OH","OK","OR","PA","PR","RI","SC","SD","TN","TX","TT","UT","VT","VA","VI","WA","WV","WI","WY"];
