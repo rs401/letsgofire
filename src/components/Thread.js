@@ -13,7 +13,7 @@ import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import ListGroup from "react-bootstrap/ListGroup";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getReplies, createReply } from "../services/category-svc";
 import { AuthContext } from "./App";
 import ThreadInfo from "./ThreadInfo";
@@ -30,8 +30,14 @@ function Thread() {
   const [newReplyText, setNewReplyText] = useState("");
   const [updateReply, setUpdateReply] = useState(0);
   const toggleShowReplyForm = () => setShowReplyForm((val) => !val);
+  const returnTo = useLocation().pathname;
+  const navigate = useNavigate();
 
   function handleReplyClick() {
+    if (user === null) {
+      // send to signin with query parameter 'returnto'
+      navigate(`/signin?returnto=${returnTo}`);
+    }
     toggleShowReplyForm();
   }
 
@@ -84,7 +90,7 @@ function Thread() {
     <div>
       <ReplyUpdateContext.Provider value={setUpdateReply}>
         <ThreadInfo tid={params.threadId} />
-        <Button className="me-2" size="sm" onClick={handleReplyClick}>
+        <Button className="me-2 mb-2" size="sm" onClick={handleReplyClick}>
           Reply
         </Button>
         {showReplyForm ? (
@@ -103,7 +109,11 @@ function Thread() {
                   }}
                   as="textarea"
                   rows={3}
+                  minlength="20"
                 />
+                <Form.Text>
+                  Minimum message length: {characterCount()} more characters.
+                </Form.Text>
               </Form.Group>
 
               <Button variant="primary" type="submit">
@@ -147,6 +157,13 @@ function Thread() {
       </ReplyUpdateContext.Provider>
     </div>
   );
+
+  function characterCount() {
+    if (newReplyText.trim().length > 20) {
+      return 0;
+    }
+    return 20 - newReplyText.trim().length;
+  }
 }
 
 export default Thread;

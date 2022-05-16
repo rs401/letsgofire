@@ -100,6 +100,9 @@ function Reply({ reply }) {
                 as="textarea"
                 rows={3}
               />
+              <Form.Text>
+                Minimum message length: {20 - newMsgText.trim().length} more characters.
+              </Form.Text>
             </Form.Group>
 
             <Button className="me-2" variant="primary" type="submit">

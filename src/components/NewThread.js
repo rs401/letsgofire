@@ -1,11 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import { getStates, createThread } from "../services/category-svc";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "./App";
 
 const NewThread = () => {
@@ -18,6 +18,13 @@ const NewThread = () => {
   const [usstate, setUsstate] = useState("");
   const [showErr, setShowErr] = useState(false);
   const user = useContext(AuthContext);
+  const returnTo = useLocation().pathname;
+
+  useEffect(() => {
+    if (user === null) {
+      navigate(`/signin?returnto=${returnTo}`);
+    }
+  }, [navigate, returnTo, user]);
 
   async function handleAddThread(e) {
     e.preventDefault();
