@@ -3,6 +3,8 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { Link } from "react-router-dom";
 import { getCats } from "../services/category-svc";
 import ListGroupPlaceholder from "./ListGroupPlaceholder";
+// import Button from "react-bootstrap/Button";
+// import { createThread } from "../services/category-svc";
 
 const CatList = () => {
   const [cats, setCats] = useState([]);
@@ -12,6 +14,21 @@ const CatList = () => {
       setCats(data);
     });
   }
+
+  // async function seedThreads() {
+  //   console.log('Seeding Threads...');
+  //   cats.forEach(async(cat) => {
+  //     let t = {
+  //       owner: "cIbJcrEp3ufBDaNCRtHuz32MhFs2",
+  //       title: "Welcome to Lets Go",
+  //       message: `This is category ${cat.data().name}`,
+  //       category: cat.id,
+  //       state: "AL",
+  //     };
+  //   const newThread = await createThread(t);
+  //   console.log(`Created thread: ${newThread}`);
+  //   });
+  // }
 
   useEffect(() => {
     fetchCats();
@@ -28,6 +45,7 @@ const CatList = () => {
     return (
       <div className="mt-3">
         <h3>Categories</h3>
+        {/* <Button onClick={seedThreads}>Seed Threads</Button> */}
         <ListGroup>
           {cats.map((cat, index) => {
             return (

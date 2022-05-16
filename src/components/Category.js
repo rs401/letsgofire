@@ -74,7 +74,7 @@ function Category() {
           );
         })}
       </Form.Select>
-      <Stack direction="horizontal" gap={3}>
+      <Stack className="my-2 shadow-sm p-1" direction="horizontal" gap={3}>
         <div>Category: {cat}</div>
         <div className="ms-auto">Thread Count: {catData.count || 0}</div>
         <div className="vr" />
@@ -86,32 +86,38 @@ function Category() {
       </Stack>
 
       <ListGroup className="shadow-sm">
-        {filteredThreads.map((thread, index) => {
-          return (
-            <Link
-              key={thread.id}
-              to={`/thread/${thread.id}`}
-              style={{ textDecoration: "none" }}
-            >
-              <ListGroup.Item
-                action
-                variant="light"
-                className="p-3 d-flex justify-content-between align-items-start"
-              >
-                <div>{thread.data().title}</div>
-                <div>
-                  <Badge bg="primary" pill>
-                    State: {thread.data().state}
-                  </Badge>
-                  {"  "}
-                  <Badge bg="primary" pill>
-                    Replies: {thread.data().count || 0}
-                  </Badge>
-                </div>
-              </ListGroup.Item>
-            </Link>
-          );
-        })}
+        {filteredThreads.length === 0 ? (
+          <div>No threads for this filter.</div>
+        ) : (
+          <>
+            {filteredThreads.map((thread, index) => {
+              return (
+                <Link
+                  key={thread.id}
+                  to={`/thread/${thread.id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ListGroup.Item
+                    action
+                    variant="light"
+                    className="p-3 d-flex justify-content-between align-items-start"
+                  >
+                    <div>{thread.data().title}</div>
+                    <div>
+                      <Badge bg="primary" pill>
+                        State: {thread.data().state}
+                      </Badge>
+                      {"  "}
+                      <Badge bg="primary" pill>
+                        Replies: {thread.data().count || 0}
+                      </Badge>
+                    </div>
+                  </ListGroup.Item>
+                </Link>
+              );
+            })}
+          </>
+        )}
       </ListGroup>
     </div>
   );
