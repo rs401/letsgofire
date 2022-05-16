@@ -4,20 +4,17 @@ import { Link } from "react-router-dom";
 import { getCats } from "../services/category-svc";
 import ListGroupPlaceholder from "./ListGroupPlaceholder";
 
-
-
 const CatList = () => {
   const [cats, setCats] = useState([]);
 
   async function fetchCats() {
-    await getCats().then(data => {
+    await getCats().then((data) => {
       setCats(data);
     });
   }
 
   useEffect(() => {
     fetchCats();
-    
   }, []);
 
   if (cats.length === 0) {
@@ -46,7 +43,9 @@ const CatList = () => {
                 >
                   <div>{cat.id}</div>
                   <div>
-                    <small className="pe-3">Threads: {cat.data().count ||0}</small>
+                    <small className="pe-3">
+                      Threads: {cat.data().count || 0}
+                    </small>
                     {/* <small className="pe-3">Messages: {cat.messages}</small> */}
                   </div>
                 </ListGroup.Item>

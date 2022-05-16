@@ -20,15 +20,14 @@ const Register = () => {
   const [errMsg, setErrMsg] = useState("");
   const [showErr, setShowErr] = useState(false);
 
-
   function handleRegisterSubmit(e) {
     e.preventDefault();
-    if(email.trim() === "" || password.trim() === "") {
+    if (email.trim() === "" || password.trim() === "") {
       setErrMsg("Name, Email and Password cannot be empty.");
       setShowErr(true);
       return;
     }
-    if(password !== password2) {
+    if (password !== password2) {
       console.log("passwords don't match: ", password, password2);
       setErrMsg("Passwords do not match.");
       setShowErr(true);
@@ -49,23 +48,40 @@ const Register = () => {
 
   return (
     <div>
-      <Form onSubmit={e => handleRegisterSubmit(e)}>
-
-        <Form.Group className="mb-3" >
+      <Form onSubmit={(e) => handleRegisterSubmit(e)}>
+        <Form.Group className="mb-3">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" value={email} onChange={e => {setEmail(e.target.value)}} />
+          <Form.Control
+            type="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
           <Form.Text className="text-muted">
             We'll never share your email with anyone else.
           </Form.Text>
         </Form.Group>
 
-        <Form.Group className="mb-3" >
+        <Form.Group className="mb-3">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" value={password} onChange={e => {setPassword(e.target.value)}} />
+          <Form.Control
+            type="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
         </Form.Group>
-        <Form.Group className="mb-3" >
+        <Form.Group className="mb-3">
           <Form.Label>Confirm Password</Form.Label>
-          <Form.Control type="password" value={password2} onChange={e => {setPassword2(e.target.value)}} />
+          <Form.Control
+            type="password"
+            value={password2}
+            onChange={(e) => {
+              setPassword2(e.target.value);
+            }}
+          />
         </Form.Group>
         <Button className="me-2" variant="primary" type="submit">
           Register
@@ -73,21 +89,19 @@ const Register = () => {
         <Button onClick={signInWithGoogle}>Login with Google</Button>
       </Form>
       <ToastContainer className="p-3" position="middle-center">
-          <Toast
-            onClose={() => closeToast()}
-            show={showErr}
-            delay={5000}
-            autohide
-            bg="danger"
-          >
-            <Toast.Header>
-              <strong className="me-auto">Error</strong>
-            </Toast.Header>
-            <Toast.Body>
-              {errMsg}
-            </Toast.Body>
-          </Toast>
-        </ToastContainer>
+        <Toast
+          onClose={() => closeToast()}
+          show={showErr}
+          delay={5000}
+          autohide
+          bg="danger"
+        >
+          <Toast.Header>
+            <strong className="me-auto">Error</strong>
+          </Toast.Header>
+          <Toast.Body>{errMsg}</Toast.Body>
+        </Toast>
+      </ToastContainer>
     </div>
   );
 };

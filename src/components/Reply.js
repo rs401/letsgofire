@@ -101,7 +101,8 @@ function Reply({ reply }) {
                 rows={3}
               />
               <Form.Text>
-                Minimum message length: {20 - newMsgText.trim().length} more characters.
+                Minimum message length: {20 - newMsgText.trim().length} more
+                characters.
               </Form.Text>
             </Form.Group>
 

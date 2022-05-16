@@ -63,11 +63,11 @@ export const currentUser = async (email) => {
   const userQuery = query(usersRef, where("email", "==", email));
   const querySnap = await getDocs(userQuery);
   querySnap.forEach((doc) => {
-    if(doc.data().email === email) {
+    if (doc.data().email === email) {
       return doc.data().displayName;
     }
   });
-}
+};
 
 export const fetchUser = async (uid) => {
   try {
@@ -81,7 +81,7 @@ export const fetchUser = async (uid) => {
   }
 };
 
-export const updateUser = async (uid,profileImage,displayName) => {
+export const updateUser = async (uid, profileImage, displayName) => {
   try {
     const userDoc = doc(db, "users", uid);
     await updateDoc(userDoc, {
