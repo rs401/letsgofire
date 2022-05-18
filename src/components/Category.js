@@ -75,11 +75,11 @@ function Category() {
         })}
       </Form.Select>
       <Stack className="my-2 shadow-sm p-1" direction="horizontal" gap={3}>
-        <div>Category: {cat}</div>
+        <div className="ps-3"><h3>Category: {cat}</h3></div>
         <div className="ms-auto">Thread Count: {catData.count || 0}</div>
         <div className="vr" />
         <div className="py-2">
-          <Button href={`/newthread/${cat}`} variant="outline-primary">
+          <Button href={`/category/${cat}/newthread/`} variant="outline-primary">
             New Thread
           </Button>{" "}
         </div>
@@ -94,7 +94,7 @@ function Category() {
               return (
                 <Link
                   key={thread.id}
-                  to={`/thread/${thread.id}`}
+                  to={`/category/${cat}/thread/${thread.id}`}
                   style={{ textDecoration: "none" }}
                 >
                   <ListGroup.Item

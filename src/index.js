@@ -13,19 +13,60 @@ import Thread from "./components/Thread";
 import Dashboard from "./components/Dashboard";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+export const routes = [
+  {
+    path: "",
+    name: "Home",
+    Component: <CatList />
+  },
+  {
+    path: "signin/",
+    name: "Sign In",
+    Component: <SignIn />
+  },
+  {
+    path: "register/",
+    name: "Register",
+    Component: <Register />
+  },
+  {
+    path: "category/:catId",
+    name: "Category",
+    Component: <Category />
+  },
+  {
+    path: "category/:catId/newthread",
+    name: "NewThread",
+    Component: <NewThread />
+  },
+  {
+    path: "category/:catId/thread/:threadId",
+    name: "Thread",
+    Component: <Thread />
+  },
+  {
+    path: "account/",
+    name: "Dashboard",
+    Component: <Dashboard />
+  }
+];
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="" element={<CatList />} />
+          {routes.map(({path, Component}, key) => (
+            <Route key={key} path={path} element={Component} />
+          ))}
+          {/* <Route path="" element={<CatList />} />
           <Route path="signin/" element={<SignIn />} />
           <Route path="register/" element={<Register />} />
           <Route path="category/:catId" element={<Category />} />
           <Route path="newthread/:catId" element={<NewThread />} />
           <Route path="thread/:threadId" element={<Thread />} />
-          <Route path="account/" element={<Dashboard />} />
+          <Route path="account/" element={<Dashboard />} /> */}
         </Route>
       </Routes>
     </Router>

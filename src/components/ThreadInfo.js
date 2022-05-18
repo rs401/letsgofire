@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useEffect, useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import Card from "react-bootstrap/Card";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Toast from "react-bootstrap/Toast";
@@ -14,10 +16,12 @@ import {
   getThread,
 } from "../services/category-svc";
 import { AuthContext } from "./App";
+import { fetchUser } from "../services/auth-svc";
 
 const ThreadInfo = ({ tid }) => {
   const user = useContext(AuthContext);
   const [thread, setThread] = useState({});
+  const [threadOwner, setThreadOwner] = useState({});
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [showErr, setShowErr] = useState(false);
   const [newTitleText, setNewTitleText] = useState("");
@@ -47,6 +51,8 @@ const ThreadInfo = ({ tid }) => {
     async function fetchThread() {
       let t = await getThread(tid);
       setThread(t);
+      let u = await fetchUser(t.owner);
+      setThreadOwner(u);
     }
     fetchThread().catch((err) => {
       console.log("error fetching threads: ", err);
@@ -117,8 +123,21 @@ const ThreadInfo = ({ tid }) => {
       </Modal>
       <Card className="p-2 mb-2 shadow">
         <Card.Body>
-          <Card.Title>{thread.title}</Card.Title>
-          <Card.Text>{thread.message}</Card.Text>
+          <Row>
+            <Col>
+              <img
+                className="shadow rounded mb-2"
+                alt=""
+                src={threadOwner.profileImage}
+              />
+              <br />
+              <span className="">{threadOwner.displayName}</span>
+            </Col>
+            <Col xs={10}>
+              <Card.Title>{thread.title}</Card.Title>
+              <Card.Text>{thread.message}</Card.Text>
+            </Col>
+          </Row>
         </Card.Body>
         <Card.Footer>
           {user !== null && user.uid === thread.owner ? (

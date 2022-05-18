@@ -8,7 +8,8 @@ import ReactRotatingText from "react-rotating-text";
 import "./App.css";
 import { auth } from "../firebase-config";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import BreadCrumb from "./BreadCrumb";
 
 export const AuthContext = createContext();
 
@@ -16,6 +17,7 @@ function App() {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
   const [currUser, setCurrUser] = useState(null);
+  const location  = useLocation();
 
   let allTheThings = [
     "Fishing 🎣",
@@ -96,6 +98,7 @@ function App() {
           <h3>
             Lets Go <ReactRotatingText items={allTheThings} />
           </h3>
+          <BreadCrumb path={location.pathname} />
         </div>
         <Outlet />
         <div style={{ height: 100 }}></div>
