@@ -1,6 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/Container";
 import Toast from "react-bootstrap/Toast";
@@ -8,10 +10,12 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import { AuthContext } from "./App";
 import { ReplyUpdateContext } from "./Thread";
 import { updateReply, deletereply } from "../services/category-svc";
+import { fetchUser } from "../services/auth-svc";
 
 function Reply({ reply }) {
   const user = useContext(AuthContext);
   const update = useContext(ReplyUpdateContext);
+  const [replyOwner, setReplyOwner] = useState({});
   const [showEditForm, setShowEditForm] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [newMsgText, setNewMsgText] = useState("");
@@ -53,6 +57,21 @@ function Reply({ reply }) {
     });
   }
 
+  function characterCount() {
+    if (newMsgText.trim().length > 20) {
+      return 0;
+    }
+    return 20 - newMsgText.trim().length;
+  }
+
+  useEffect(() => {
+    async function getOwner() {
+      let u = await fetchUser(reply.data().owner);
+      setReplyOwner(u);
+    }
+    getOwner().catch((err) => console.log("error: ", err));
+  }, [reply]);
+
   return (
     <div>
       <Modal show={showConfirmDelete} onHide={toggleShowConfirmDelete}>
@@ -71,8 +90,19 @@ function Reply({ reply }) {
           </Button>
         </Modal.Footer>
       </Modal>
-      <small>User: {reply.data().owner}</small>
-      <h4>Message: {reply.data().message}</h4>
+      <Row>
+        <Col>
+          <img
+            className="rounded"
+            alt="Profile"
+            src={replyOwner.profileImage}
+            referrerpolicy="no-referrer"
+          />
+          <br />
+          <span className="">{replyOwner.displayName}</span>
+        </Col>
+        <Col xs={10}>{reply.data().message}</Col>
+      </Row>
       {user !== null && user.uid === reply.data().owner ? (
         <div>
           <Button className="me-2" size="sm" onClick={handleEditClick}>
@@ -101,8 +131,7 @@ function Reply({ reply }) {
                 rows={3}
               />
               <Form.Text>
-                Minimum message length: {20 - newMsgText.trim().length} more
-                characters.
+                Minimum message length: {characterCount()} more characters.
               </Form.Text>
             </Form.Group>
 

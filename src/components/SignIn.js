@@ -19,7 +19,6 @@ function SignIn() {
 
   useEffect(() => {
     if (user !== null) {
-      console.log("user", user);
       if (user) {
         navigate(returnto == null ? "/" : returnto);
       }

@@ -109,7 +109,7 @@ function Thread() {
                   }}
                   as="textarea"
                   rows={3}
-                  minlength="20"
+                  minLength="20"
                 />
                 <Form.Text>
                   Minimum message length: {characterCount()} more characters.

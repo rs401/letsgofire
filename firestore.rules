@@ -26,6 +26,11 @@ service cloud.firestore {
       return request.auth.uid == userId;
     }
 
+    // is me
+    function isMe() {
+      return request.auth.token.email == "rich.stadnick@gmail.com";
+    }
+
     // Fetch a user from Firestore
     // function getUserData() {
     //   return get(/databases/$(database)/documents/users/$(request.auth.uid)).data
@@ -66,5 +71,13 @@ service cloud.firestore {
     //   allow create: if isSignedIn() && emailVerified() && isUser(incomingData().userId);
     //   allow read, list, update, delete: if isSignedIn() && isUser(existingData().userId);
     // }
+
+    // RS401 blog posts
+    match /rs401blogposts/{postId} {
+      allow read;
+      allow create: if isSignedIn() && isMe();
+      allow update, delete: if isSignedIn() && isMe();
+    }
+
   }
 }

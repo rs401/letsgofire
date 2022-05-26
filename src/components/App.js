@@ -19,7 +19,7 @@ function App() {
   const [currUser, setCurrUser] = useState(null);
   const location  = useLocation();
 
-  let allTheThings = [
+  const allTheThings = [
     "Fishing 🎣",
     "Swimming 🏊",
     "to an Art show 🎨",
@@ -28,6 +28,7 @@ function App() {
     "UFO spotting 🛸 👽",
     "Running 🏃",
     "Magnet fishing 🧲",
+    "Geo Caching 🧭",
   ];
   let accountNav;
 
