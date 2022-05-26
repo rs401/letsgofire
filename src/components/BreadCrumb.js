@@ -14,18 +14,30 @@ const BreadCrumb = ({ path }) => {
     slice.shift();
     setParts(slice);
 
+    if (slice.includes("newthread")) {
+      setIsThread(false);
+      setThread({});
+      return;
+    }
+    if (slice.includes("signin")) {
+      setIsThread(false);
+      setThread({});
+      return;
+    }
     if (slice.length >= 3) {
       async function fetchThread() {
         let t = await getThread(params.threadId);
         setThread(t);
       }
-      fetchThread().then(() => {
-        setIsThread(true);
-      }).catch((err) => {
-        console.log("error fetching threads: ", err);
-      });
+      fetchThread()
+        .then(() => {
+          setIsThread(true);
+        })
+        .catch((err) => {
+          console.log("error fetching threads: ", err);
+        });
     }
-    if(slice.length < 3) {
+    if (slice.length < 3) {
       setIsThread(false);
       setThread({});
     }
@@ -44,9 +56,11 @@ const BreadCrumb = ({ path }) => {
         </Breadcrumb.Item>
         {isThread ? (
           <Breadcrumb.Item active>
-            <Link to={`/category/${params.catId}/thread/${params.threadId}`}>{thread.title}</Link>
+            <Link to={`/category/${params.catId}/thread/${params.threadId}`}>
+              {thread.title}
+            </Link>
           </Breadcrumb.Item>
-        ):(null)}
+        ) : null}
       </Breadcrumb>
     </div>
   );

@@ -7,6 +7,7 @@ import ListGroupPlaceholder from "./ListGroupPlaceholder";
 // import { createThread } from "../services/category-svc";
 
 const CatList = () => {
+  document.title = "Lets GO!";
   const [cats, setCats] = useState([]);
 
   async function fetchCats() {
@@ -57,7 +58,7 @@ const CatList = () => {
                 <ListGroup.Item
                   action
                   variant="light"
-                  className="p-3 d-flex justify-content-between align-items-start"
+                  className="p-3 d-flex justify-content-between align-items-start shadow rounded mb-2"
                 >
                   <div>{cat.id}</div>
                   <div>

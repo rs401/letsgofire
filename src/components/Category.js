@@ -11,6 +11,7 @@ function Category() {
   let params = useParams();
   let states = getStates();
   const cat = params.catId;
+  document.title = `Lets GO! - ${cat}`;
   const [location, setLocation] = useState("");
   const [threads, setThreads] = useState([]);
   const [fetched, setFetched] = useState(false);
