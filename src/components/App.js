@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useEffect, createContext } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -16,7 +16,6 @@ export const AuthContext = createContext();
 function App() {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
-  const [currUser, setCurrUser] = useState(null);
   const location  = useLocation();
 
   const allTheThings = [
@@ -34,9 +33,6 @@ function App() {
 
   useEffect(() => {
     if (loading) return;
-    if (user) {
-      setCurrUser(user);
-    }
     if (error) {
       console.log("error in auth state: ", error.message);
     }
@@ -46,7 +42,6 @@ function App() {
     try {
       await auth.signOut().then(() => {
         console.log("sign out clicked");
-        setCurrUser(null);
         navigate("/", { replace: true });
       });
     } catch (error) {
@@ -54,7 +49,7 @@ function App() {
     }
   }
 
-  if (currUser === null) {
+  if (!user) {
     accountNav = <Nav.Link href="/signin">SignIn / SignUp</Nav.Link>;
   } else {
     accountNav = (
@@ -78,17 +73,9 @@ function App() {
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/">About</Nav.Link>
                 <NavDropdown title="Info" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">
-                    Another action
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">
-                    Something
-                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/privacy">Privacy</NavDropdown.Item>
+                  <NavDropdown.Item href="/terms">Terms</NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4">
-                    Separated link
-                  </NavDropdown.Item>
                 </NavDropdown>
               </Nav>
               <Nav className="justify-content-end">{accountNav}</Nav>
