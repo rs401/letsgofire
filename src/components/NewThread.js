@@ -9,6 +9,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "./App";
 
 const NewThread = () => {
+  document.title = `Lets GO! - Create New Discussion`;
   let navigate = useNavigate();
   let states = getStates();
   let params = useParams();

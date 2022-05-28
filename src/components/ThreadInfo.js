@@ -8,7 +8,7 @@ import Container from "react-bootstrap/Container";
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Button from "react-bootstrap/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   deleteThread,
   updateThread,
@@ -51,6 +51,7 @@ const ThreadInfo = ({ tid }) => {
     async function fetchThread() {
       let t = await getThread(tid);
       setThread(t);
+      document.title = `Lets GO! - ${t.title}`;
       let u = await fetchUser(t.owner);
       setThreadOwner(u);
     }
@@ -131,7 +132,7 @@ const ThreadInfo = ({ tid }) => {
                 src={threadOwner.profileImage}
               />
               <br />
-              <span className="">{threadOwner.displayName}</span>
+              <Link to={`/user/${threadOwner.uid}`} className="">{threadOwner.displayName}</Link>
             </Col>
             <Col xs={10}>
               <Card.Title>{thread.title}</Card.Title>

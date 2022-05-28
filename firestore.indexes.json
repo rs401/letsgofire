@@ -27,7 +27,35 @@
           "order": "DESCENDING"
         }
       ]
-    }
+    },
+    {
+      "collectionGroup": "thread",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "owner",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "updatedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+        "collectionGroup": "reply",
+        "queryScope": "COLLECTION",
+        "fields": [
+          {
+            "fieldPath": "owner",
+            "order": "ASCENDING"
+          },
+          {
+            "fieldPath": "updatedAt",
+            "order": "DESCENDING"
+          }
+        ]
+      }
   ],
   "fieldOverrides": []
 }

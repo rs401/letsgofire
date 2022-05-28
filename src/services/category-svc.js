@@ -74,6 +74,24 @@ export async function getThreads(catid) {
   }
 }
 
+export async function getThreadsByUser(uid) {
+  try {
+    let threadlist = [];
+    const q = query(
+      collection(db, "thread"),
+      where("owner", "==", uid),
+      orderBy("updatedAt", "desc")
+    );
+    const snapshot = await getDocs(q);
+    snapshot.forEach((data) => {
+      threadlist.push(data);
+    });
+    return threadlist;
+  } catch (err) {
+    console.log("error getting threads: ", err);
+  }
+}
+
 export async function createThread(t) {
   try {
     t.createdAt = Timestamp.now();
@@ -129,6 +147,22 @@ export async function getThread(threadId) {
   }
 }
 
+export async function getThreadForUser(threadId) {
+  try {
+    const docRef = doc(db, "thread", threadId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap;
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+      return null;
+    }
+  } catch (err) {
+    console.log("error getting document: ", err);
+  }
+}
+
 /** Reply */
 export async function createReply(r) {
   try {
@@ -171,6 +205,24 @@ export async function getReplies(threadId) {
       collection(db, "reply"),
       where("thread", "==", threadId),
       orderBy("createdAt")
+    );
+    const docs = await getDocs(q);
+    docs.forEach((data) => {
+      replylist.push(data);
+    });
+    return replylist;
+  } catch (err) {
+    console.log("error getting replies: ", err);
+  }
+}
+
+export async function getRepliesByUser(uid) {
+  try {
+    let replylist = [];
+    const q = query(
+      collection(db, "reply"),
+      where("owner", "==", uid),
+      orderBy("updatedAt", "desc")
     );
     const docs = await getDocs(q);
     docs.forEach((data) => {
