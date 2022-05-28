@@ -11,6 +11,7 @@ import { AuthContext } from "./App";
 import { ReplyUpdateContext } from "./Thread";
 import { updateReply, deletereply } from "../services/category-svc";
 import { fetchUser } from "../services/auth-svc";
+import {Link} from "react-router-dom";
 
 function Reply({ reply }) {
   const user = useContext(AuthContext);
@@ -96,10 +97,10 @@ function Reply({ reply }) {
             className="rounded"
             alt="Profile"
             src={replyOwner.profileImage}
-            referrerpolicy="no-referrer"
+            referrerPolicy="no-referrer"
           />
           <br />
-          <span className="">{replyOwner.displayName}</span>
+          <Link to={`/user/${replyOwner.uid}`} className="">{replyOwner.displayName}</Link>
         </Col>
         <Col xs={10}>{reply.data().message}</Col>
       </Row>

@@ -24,6 +24,16 @@ const BreadCrumb = ({ path }) => {
       setThread({});
       return;
     }
+    if (slice.includes("register")) {
+      setIsThread(false);
+      setThread({});
+      return;
+    }
+    if (slice.includes("user")) {
+      setIsThread(false);
+      setThread({});
+      return;
+    }
     if (slice.length >= 3) {
       async function fetchThread() {
         let t = await getThread(params.threadId);

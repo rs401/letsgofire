@@ -77,7 +77,7 @@ export const fetchUser = async (uid) => {
     return data;
   } catch (err) {
     console.error(err);
-    alert("An error occurred while fetching user data");
+    throw err;
   }
 };
 

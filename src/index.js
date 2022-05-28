@@ -11,6 +11,7 @@ import Register from "./components/Register";
 import NewThread from "./components/NewThread";
 import Thread from "./components/Thread";
 import Dashboard from "./components/Dashboard";
+import User from "./components/User";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export const routes = [
@@ -48,6 +49,11 @@ export const routes = [
     path: "account/",
     name: "Dashboard",
     Component: <Dashboard />
+  },
+  {
+    path: "user/:uid",
+    name: "User",
+    Component: <User />
   }
 ];
 

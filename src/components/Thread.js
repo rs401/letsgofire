@@ -52,6 +52,7 @@ function Thread() {
       owner: user.uid,
       message: newReplyText,
       thread: params.threadId,
+      category: params.catId,
     };
     const results = await createReply(r);
     if (results !== "") {

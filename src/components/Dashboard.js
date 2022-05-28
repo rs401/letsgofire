@@ -40,6 +40,9 @@ function Dashboard() {
         setProfileImage(data.profileImage);
       });
     }
+    if (!user) {
+      navigate("/");
+    }
   }, [user, navigate]);
 
   if (user) {
